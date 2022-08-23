@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import Plane from '$lib/Plane/index.svelte';
+	import Object from '$lib/Object/index.svelte';
+
 	import * as THREE from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -32,7 +34,7 @@
 			renderer = res.renderer;
 
 			const controls = new OrbitControls(camera, renderer.domElement);
-			camera.position.set(0, 20, 100);
+			camera.position.set(0, -100, 20);
 			controls.update();
 
 			function animate() {
@@ -47,4 +49,5 @@
 
 {#await loadThreeJs() then _}
 	<Plane bind:scene bind:camera bind:renderer width={100} height={100} />
+	<Object bind:scene bind:camera bind:renderer />
 {/await}
