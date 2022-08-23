@@ -33,13 +33,16 @@
 			camera = res.camera;
 			renderer = res.renderer;
 
-			const controls = new OrbitControls(camera, renderer.domElement);
-			camera.position.set(0, -100, 20);
-			controls.update();
+			//const controls = new OrbitControls(camera, renderer.domElement);
+			//camera.position.set(0, -100, 20);
+			//controls.update();
+
+			camera.position.set(0, -50, 40);
+			camera.rotation.x = 1.3;
 
 			function animate() {
 				requestAnimationFrame(animate);
-				controls.update();
+				//controls.update();
 				renderer.render(scene, camera);
 			}
 			animate();
