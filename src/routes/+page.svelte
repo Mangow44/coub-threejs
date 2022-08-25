@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import Player from '$lib/Player/index.svelte';
+	import GameMenu from '$lib/GameMenu/index.svelte';
 	import * as THREE from 'three';
 	import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -9,6 +10,7 @@
 	let camera = {};
 	let renderer = {};
 	let controls = {};
+	let locked = false;
 
 	const loadThreeJs = async () => {
 		onMount(() => {
@@ -41,12 +43,11 @@
 			init();
 			//camera.position.set(0, 0, 20);
 			//controls.update();
-			// controls.getObject().position.set(0, 0, 100);
-			// controls.getObject().rotation.x = 1.5;
 
 			function animate() {
 				requestAnimationFrame(animate);
 				//controls.update();
+				locked = controls.isLocked;
 				renderer.render(scene, camera);
 			}
 			animate();
@@ -55,12 +56,7 @@
 </script>
 
 {#await loadThreeJs() then _}
-	<button
-		on:click={() => {
-			console.log(controls);
-			controls.lock();
-		}}>ok</button
-	>
+	<GameMenu {locked} onClick={() => controls.lock()} />
 
 	<Player bind:scene bind:controls scale={3} />
 {/await}
