@@ -3,8 +3,7 @@
 	import Player from '$lib/Player/index.svelte';
 	import GameMenu from '$lib/GameMenu/index.svelte';
 	import * as THREE from 'three';
-	import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
-	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+	import { pointerLock } from '$lib/Utils/Cameras/pointerLock';
 
 	let scene = {};
 	let camera = {};
@@ -32,8 +31,7 @@
 				renderer = new THREE.WebGLRenderer();
 				renderer.setSize(window.innerWidth, window.innerHeight);
 
-				controls = new PointerLockControls(camera, renderer.domElement);
-				//controls = new OrbitControls(camera, renderer.domElement);
+				controls = pointerLock(camera, renderer);
 
 				document.body.appendChild(renderer.domElement);
 
@@ -41,12 +39,9 @@
 			};
 
 			init();
-			//camera.position.set(0, 0, 20);
-			//controls.update();
 
 			function animate() {
 				requestAnimationFrame(animate);
-				//controls.update();
 				locked = controls.isLocked;
 				renderer.render(scene, camera);
 			}
