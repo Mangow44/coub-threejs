@@ -6,7 +6,7 @@
 	$: if (locked) message = 'Resume';
 </script>
 
-<!-- TODO personnaliser le message: play, resume... -->
+<!-- TODO corriger le bug du bouton, il faut attendre le locker... -->
 {#if !locked}
 	<div class="fixed flex h-screen w-full">
 		<span class="absolute h-full w-full bg-slate-600 opacity-60" />

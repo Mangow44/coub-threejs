@@ -9,8 +9,11 @@ export const bindKeyboard = (keyboard) => {
 };
 
 export const processKeyboard = (keyboard, controls, delta = 0) => {
+	if (!controls.getObject) return;
+
 	let speed = 5;
 	let currentSpeed = speed * delta;
+
 	if (keyboard['w'] || keyboard['z']) {
 		controls.moveForward(currentSpeed);
 	}

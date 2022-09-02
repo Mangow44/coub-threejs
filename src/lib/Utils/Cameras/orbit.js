@@ -4,6 +4,7 @@ export const orbit = (camera, renderer) => {
 	let controls = new OrbitControls(camera, renderer.domElement);
 
 	camera.position.set(0, 0, 20);
+	controls.isLocked = true;
 	controls.update();
 
 	function animate() {
