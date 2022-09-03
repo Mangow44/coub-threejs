@@ -1,18 +1,30 @@
 <script>
 	import * as THREE from 'three';
 	import { onMount } from 'svelte';
+	import { io } from 'socket.io-client';
 	import Player from '$lib/Player/index.svelte';
 	import GameMenu from '$lib/GameMenu/index.svelte';
 	import { pointerLock } from '$lib/Utils/Cameras/pointerLock';
 	import { orbit } from '$lib/Utils/Cameras/orbit';
 	import { grid } from '$lib/Utils/Helpers/grid';
 	import { axes } from '$lib/Utils/Helpers/axes';
+	import { each } from 'svelte/internal';
+	import PlayerEntity from '$lib/Entities/PlayerEntity.svelte';
+
+	const socket = io();
 
 	let scene = {};
 	let camera = {};
 	let renderer = {};
 	let controls = {};
 	let locked = false;
+
+	let entities = [];
+
+	socket.on('getPlayers', (pls) => {
+		entities = pls;
+		console.log(entities);
+	});
 
 	const loadThreeJs = async () => {
 		onMount(() => {
@@ -56,5 +68,11 @@
 {#await loadThreeJs() then _}
 	<GameMenu {locked} onClick={() => controls.lock()} />
 
-	<Player bind:scene bind:controls scale={3} />
+	<Player bind:scene bind:controls scale={3} {socket} />
+
+	{#each entities as entity (entity.id)}
+		{#if socket.id != entity.id}
+			<PlayerEntity playerPosition={entity.position} bind:scene />
+		{/if}
+	{/each}
 {/await}

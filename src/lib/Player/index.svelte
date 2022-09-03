@@ -7,6 +7,7 @@
 	export let scene = {};
 	export let controls = {};
 	export let scale = 10;
+	export let socket = {};
 
 	let [height, width, depth] = [scale, scale, scale];
 	let clock = new THREE.Clock();
@@ -17,10 +18,16 @@
 		const geometry = new THREE.BoxGeometry(width, height, depth);
 		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 		player = new THREE.Mesh(geometry, material);
-		player.position.y = 0 + height / 2;
 		scene.add(player);
 
-		if (controls.getObject) controls.getObject().position.y = player.position.y;
+		socket.emit('updatePlayers', {
+			x: player.position.x,
+			z: player.position.z,
+			y: player.position.y,
+			rotation: controls.getObject().rotation
+		});
+
+		if (controls.getObject()) controls.getObject().position.y = height;
 
 		bindKeyboard(keyboard);
 
@@ -29,6 +36,13 @@
 			let delta = clock.getDelta();
 			processKeyboard(keyboard, controls, delta);
 			drawPlayer(player, controls);
+
+			socket.emit('updatePlayers', {
+				x: player.position.x,
+				z: player.position.z,
+				y: player.position.y,
+				rotation: controls.getObject().rotation
+			});
 		};
 		animate();
 	});
