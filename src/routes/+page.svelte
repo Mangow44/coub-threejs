@@ -23,7 +23,6 @@
 
 	socket.on('getPlayers', (pls) => {
 		entities = pls;
-		console.log(entities);
 	});
 
 	const loadThreeJs = async () => {

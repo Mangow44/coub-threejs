@@ -1,32 +1,32 @@
 <script>
 	import * as THREE from 'three';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { drawPlayerEntity } from '$lib/Utils/Player/drawPlayerEntity';
+	import { materials } from '$lib/Utils/Player/basicSkin';
 
 	export let playerPosition = {};
 	export let scene = {};
+	let player;
 
 	// rotation / taille / couleur
-	const geometry = new THREE.BoxGeometry(10, 10, 10);
-	const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-	let player = new THREE.Mesh(geometry, material);
+	onMount(() => {
+		const geometry = new THREE.BoxGeometry(10, 10, 10);
+		player = new THREE.Mesh(geometry, materials);
 
-	player.position.x = playerPosition.x;
-	player.position.z = playerPosition.z;
-	player.position.y = playerPosition.y;
-	player.setRotationFromEuler(playerPosition.rotation);
+		scene.add(player);
+		drawPlayerEntity(player, playerPosition);
 
-	scene.add(player);
+		const animate = () => {
+			if (player) {
+				requestAnimationFrame(animate);
+				drawPlayerEntity(player, playerPosition);
+			}
+		};
+		animate();
+	});
 
 	onDestroy(() => {
 		scene.remove(player);
+		player = null;
 	});
-
-	const animate = () => {
-		requestAnimationFrame(animate);
-		player.position.x = playerPosition.x;
-		player.position.z = playerPosition.z;
-		player.position.y = playerPosition.y;
-		player.setRotationFromEuler(playerPosition.rotation);
-	};
-	animate();
 </script>
