@@ -11,6 +11,9 @@
 	// rotation / taille / couleur
 	onMount(() => {
 		const geometry = new THREE.BoxGeometry(10, 10, 10);
+		materials[5] = new THREE.MeshBasicMaterial({
+			map: new THREE.TextureLoader().load('/basicFace.png')
+		});
 		player = new THREE.Mesh(geometry, materials);
 
 		scene.add(player);
