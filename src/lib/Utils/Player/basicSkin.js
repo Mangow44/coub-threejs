@@ -6,5 +6,7 @@ export const materials = [
 	new THREE.MeshBasicMaterial({ color: 0xC9BEE7 }),
 	new THREE.MeshBasicMaterial({ color: 0xC9BEE7 }),
 	new THREE.MeshBasicMaterial({ color: 0xC9BEE7 }),
-	new THREE.MeshBasicMaterial({ color: 0xffffff })
+	new THREE.MeshBasicMaterial({
+		map: new THREE.TextureLoader().load('/basicFace.png')
+	})
 ]

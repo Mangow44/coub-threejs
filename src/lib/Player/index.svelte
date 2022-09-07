@@ -15,6 +15,8 @@
 	let player;
 
 	const updateServerPlayers = () => {
+		if (!controls.getObject()) return;
+
 		socket.emit('updatePlayers', {
 			x: player.position.x,
 			z: player.position.z,
@@ -23,13 +25,14 @@
 		});
 	};
 
-	onMount(() => {
+	onMount(async () => {
 		const geometry = new THREE.BoxGeometry(width, height, depth);
-		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-		player = new THREE.Mesh(geometry, material);
+		const snap = await import('$lib/Utils/Player/basicSkin');
+		player = new THREE.Mesh(geometry, snap.materials);
 		scene.add(player);
 
-		if (controls.getObject()) controls.getObject().position.y = height;
+		player.position.y = height / 2;
+		if (controls.getObject()) controls.getObject().position.y = player.position.y;
 
 		bindKeyboard(keyboard);
 		updateServerPlayers();
@@ -37,8 +40,10 @@
 		const animate = () => {
 			requestAnimationFrame(animate);
 			let delta = clock.getDelta();
+
 			processKeyboard(keyboard, controls, delta);
 			drawPlayerAtCameraPosition(player, controls);
+
 			updateServerPlayers();
 		};
 		animate();

@@ -8,7 +8,6 @@
 	import { orbit } from '$lib/Utils/Cameras/orbit';
 	import { grid } from '$lib/Utils/Helpers/grid';
 	import { axes } from '$lib/Utils/Helpers/axes';
-	import { each } from 'svelte/internal';
 	import PlayerEntity from '$lib/Entities/PlayerEntity.svelte';
 
 	const socket = io();
@@ -21,8 +20,8 @@
 
 	let entities = [];
 
-	socket.on('getPlayers', (pls) => {
-		entities = pls;
+	socket.on('getPlayers', (players) => {
+		entities = players;
 	});
 
 	const loadThreeJs = async () => {
@@ -71,7 +70,7 @@
 
 	{#each entities as entity (entity.id)}
 		{#if socket.id != entity.id}
-			<PlayerEntity playerPosition={entity.position} bind:scene />
+			<PlayerEntity bind:scene playerPosition={entity.position} scale={3} />
 		{/if}
 	{/each}
 {/await}

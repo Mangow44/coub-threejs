@@ -1,14 +1,14 @@
 export const bindKeyboard = (keyboard) => {
 
-	// To lower case, car lors du sprint, on appuie sur SHIFT qui met les touches en MAJ
+	// To UPPER case, car lors du sprint, on appuie sur SHIFT et il y a un conflit si les touches sont pas normalisées
 
 	window.addEventListener('keydown', (e) => {
-		let key = e.key.toLowerCase();
+		let key = e.key.toUpperCase();
 		keyboard[key] = true;
 	});
 
 	window.addEventListener('keyup', (e) => {
-		let key = e.key.toLowerCase();
+		let key = e.key.toUpperCase();
 		keyboard[key] = false;
 	});
 };
@@ -16,21 +16,21 @@ export const bindKeyboard = (keyboard) => {
 export const processKeyboard = (keyboard, controls, delta = 0) => {
 	if (!controls.getObject) return;
 
-	let speed = 8;
+	let speed = 5;
 	let currentSpeed = speed * delta;
 
-	if (keyboard['shift'] == true) currentSpeed = currentSpeed * 2.5;
+	if (keyboard['SHIFT']) currentSpeed = currentSpeed * 2.5;
 
-	if (keyboard['w'] || keyboard['z'] == true) {
+	if (keyboard['W'] || keyboard['Z']) {
 		controls.moveForward(currentSpeed);
 	}
-	if (keyboard['s'] == true) {
+	if (keyboard['S']) {
 		controls.moveForward(-currentSpeed);
 	}
-	if (keyboard['a'] || keyboard['q'] == true) {
+	if (keyboard['A'] || keyboard['Q']) {
 		controls.moveRight(-currentSpeed);
 	}
-	if (keyboard['d'] == true) {
+	if (keyboard['D']) {
 		controls.moveRight(currentSpeed);
 	}
 };

@@ -2,28 +2,26 @@
 	import * as THREE from 'three';
 	import { onDestroy, onMount } from 'svelte';
 	import { drawPlayerEntity } from '$lib/Utils/Player/drawPlayerEntity';
-	import { materials } from '$lib/Utils/Player/basicSkin';
 
-	export let playerPosition = {};
 	export let scene = {};
+	export let playerPosition = {};
+	export let scale = 10;
+
+	let [height, width, depth] = [scale, scale, scale];
 	let player;
 
-	// rotation / taille / couleur
-	onMount(() => {
-		const geometry = new THREE.BoxGeometry(10, 10, 10);
-		materials[5] = new THREE.MeshBasicMaterial({
-			map: new THREE.TextureLoader().load('/basicFace.png')
-		});
-		player = new THREE.Mesh(geometry, materials);
+	onMount(async () => {
+		const geometry = new THREE.BoxGeometry(height, width, depth);
+		const snap = await import('$lib/Utils/Player/basicSkin');
+		player = new THREE.Mesh(geometry, snap.materials);
 
 		scene.add(player);
 		drawPlayerEntity(player, playerPosition);
 
 		const animate = () => {
-			if (player) {
-				requestAnimationFrame(animate);
-				drawPlayerEntity(player, playerPosition);
-			}
+			if (!player) return;
+			requestAnimationFrame(animate);
+			drawPlayerEntity(player, playerPosition);
 		};
 		animate();
 	});
