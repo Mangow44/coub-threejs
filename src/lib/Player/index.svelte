@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { bindKeyboard, processKeyboard } from '$lib/Utils/Player/basicControls';
 	import { drawPlayerAtCameraPosition } from '$lib/Utils/Player/drawPlayerAtCameraPosition';
+	import { createPlayer } from '$lib/Utils/Player/player';
 
 	export let scene = {};
 	export let controls = {};
@@ -13,6 +14,7 @@
 	let clock = new THREE.Clock();
 	let keyboard = [];
 	let player;
+	let hands;
 
 	const updateServerPlayers = () => {
 		if (!controls.getObject()) return;
@@ -26,12 +28,12 @@
 	};
 
 	onMount(async () => {
-		const geometry = new THREE.BoxGeometry(width, height, depth);
-		const snap = await import('$lib/Utils/Player/basicSkin');
-		player = new THREE.Mesh(geometry, snap.materials);
+		let playerSnap = await createPlayer(height, width, depth);
+		player = playerSnap.player;
+		hands = playerSnap.hands;
+
 		scene.add(player);
 
-		player.position.y = height / 2;
 		if (controls.getObject()) controls.getObject().position.y = player.position.y;
 
 		bindKeyboard(keyboard);

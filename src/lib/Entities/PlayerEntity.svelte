@@ -1,7 +1,7 @@
 <script>
-	import * as THREE from 'three';
 	import { onDestroy, onMount } from 'svelte';
 	import { drawPlayerEntity } from '$lib/Utils/Player/drawPlayerEntity';
+	import { createPlayer } from '$lib/Utils/Player/player';
 
 	export let scene = {};
 	export let playerPosition = {};
@@ -9,11 +9,12 @@
 
 	let [height, width, depth] = [scale, scale, scale];
 	let player;
+	let hands;
 
 	onMount(async () => {
-		const geometry = new THREE.BoxGeometry(height, width, depth);
-		const snap = await import('$lib/Utils/Player/basicSkin');
-		player = new THREE.Mesh(geometry, snap.materials);
+		let playerSnap = await createPlayer(height, width, depth);
+		player = playerSnap.player;
+		hands = playerSnap.hands;
 
 		scene.add(player);
 		drawPlayerEntity(player, playerPosition);
