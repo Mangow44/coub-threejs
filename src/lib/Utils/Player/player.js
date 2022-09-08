@@ -22,7 +22,5 @@ export const createPlayer = async (height, width, depth) => {
 	
 	player.position.y = height / 2;
 
-	let hands = {leftHand, RightHand};
-
-	return {player, hands};
+	return player;
 }

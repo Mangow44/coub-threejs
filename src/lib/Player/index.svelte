@@ -14,7 +14,6 @@
 	let clock = new THREE.Clock();
 	let keyboard = [];
 	let player;
-	let hands;
 
 	const updateServerPlayers = () => {
 		if (!controls.getObject()) return;
@@ -28,9 +27,7 @@
 	};
 
 	onMount(async () => {
-		let playerSnap = await createPlayer(height, width, depth);
-		player = playerSnap.player;
-		hands = playerSnap.hands;
+		player = await createPlayer(height, width, depth);
 
 		scene.add(player);
 
