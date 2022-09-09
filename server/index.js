@@ -18,14 +18,14 @@ io.on('connection', (socket) => {
 		io.emit('getPlayers', players);
 	});
 
-	socket.on('updatePlayers', (playerPosition) => {
+	socket.on('updatePlayers', (playerData) => {
 		let exists = players.find(player => (player.id == socket.id));
 
 		if (exists) {
 			let index = players.indexOf(exists);
-			players[index].position = playerPosition;
+			players[index].data = playerData;
 		} else {
-			players.push({id: socket.id, position: playerPosition});
+			players.push({id: socket.id, data: playerData});
 		}
 
 		io.emit('getPlayers', players);

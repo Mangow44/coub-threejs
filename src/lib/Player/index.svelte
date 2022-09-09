@@ -4,6 +4,7 @@
 	import { bindKeyboard, processKeyboard } from '$lib/Utils/Player/basicControls';
 	import { drawPlayerAtCameraPosition } from '$lib/Utils/Player/drawPlayerAtCameraPosition';
 	import { createPlayer } from '$lib/Utils/Player/player';
+	import { createName } from '$lib/Utils/Player/playerName';
 
 	export let scene = {};
 	export let controls = {};
@@ -14,6 +15,7 @@
 	let clock = new THREE.Clock();
 	let cameraOffset = 0.5;
 	let keyboard = [];
+	let name = 'Thomas';
 	let player;
 
 	const updateServerPlayers = () => {
@@ -23,14 +25,17 @@
 			x: player.position.x,
 			z: player.position.z,
 			y: player.position.y,
-			rotation: controls.getObject().rotation
+			rotation: controls.getObject().rotation,
+			name: name
 		});
 	};
 
 	onMount(async () => {
 		player = await createPlayer(height, width, depth);
+		player.name = await createName(name);
 
 		scene.add(player);
+		scene.add(player.name);
 
 		if (controls.getObject()) controls.getObject().position.y = player.position.y + cameraOffset;
 
@@ -41,7 +46,7 @@
 			requestAnimationFrame(animate);
 			let delta = clock.getDelta();
 
-			processKeyboard(keyboard, controls, delta);
+			if (controls.getObject()) processKeyboard(keyboard, controls, delta);
 			drawPlayerAtCameraPosition(player, controls, cameraOffset);
 
 			updateServerPlayers();

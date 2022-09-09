@@ -70,7 +70,7 @@
 
 	{#each entities as entity (entity.id)}
 		{#if socket.id != entity.id}
-			<PlayerEntity bind:scene playerPosition={entity.position} scale={3} />
+			<PlayerEntity bind:scene playerData={entity.data} scale={3} />
 		{/if}
 	{/each}
 {/await}
