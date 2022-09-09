@@ -10,6 +10,10 @@
 	import { axes } from '$lib/Utils/Helpers/axes';
 	import PlayerEntity from '$lib/Entities/PlayerEntity.svelte';
 
+	// POOP
+	let name = '';
+	let isOk = false;
+
 	const socket = io();
 
 	let scene = {};
@@ -64,13 +68,32 @@
 </script>
 
 {#await loadThreeJs() then _}
-	<GameMenu {locked} onClick={() => controls.lock()} />
+	<!-- POOP -->
+	{#if !isOk}
+		<div class="absolute bg-gray-700 text-white">
+			<label for="name">Nom du joueur</label>
+			<input
+				type="text"
+				name="playerName"
+				id="name"
+				class="border-2 border-black text-black"
+				bind:value={name}
+			/>
+			<button
+				on:click={() => {
+					isOk = true;
+				}}>OK</button
+			>
+		</div>
+	{:else}
+		<GameMenu {locked} onClick={() => controls.lock()} />
 
-	<Player bind:scene bind:controls scale={3} {socket} />
+		<Player bind:scene bind:controls scale={3} {socket} {name} />
 
-	{#each entities as entity (entity.id)}
-		{#if socket.id != entity.id}
-			<PlayerEntity bind:scene playerData={entity.data} scale={3} />
-		{/if}
-	{/each}
+		{#each entities as entity (entity.id)}
+			{#if socket.id != entity.id}
+				<PlayerEntity bind:scene playerData={entity.data} scale={3} />
+			{/if}
+		{/each}
+	{/if}
 {/await}

@@ -11,11 +11,12 @@
 	export let scale = 10;
 	export let socket = {};
 
+	export let name = '';
+
 	let [height, width, depth] = [scale, scale, scale];
 	let clock = new THREE.Clock();
 	let cameraOffset = 0.5;
 	let keyboard = [];
-	let name = 'Thomas';
 	let player;
 
 	const updateServerPlayers = () => {
