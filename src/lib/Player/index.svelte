@@ -12,6 +12,7 @@
 
 	let [height, width, depth] = [scale, scale, scale];
 	let clock = new THREE.Clock();
+	let cameraOffset = 0.5;
 	let keyboard = [];
 	let player;
 
@@ -31,7 +32,7 @@
 
 		scene.add(player);
 
-		if (controls.getObject()) controls.getObject().position.y = player.position.y;
+		if (controls.getObject()) controls.getObject().position.y = player.position.y + cameraOffset;
 
 		bindKeyboard(keyboard);
 		updateServerPlayers();
@@ -41,7 +42,7 @@
 			let delta = clock.getDelta();
 
 			processKeyboard(keyboard, controls, delta);
-			drawPlayerAtCameraPosition(player, controls);
+			drawPlayerAtCameraPosition(player, controls, cameraOffset);
 
 			updateServerPlayers();
 		};
